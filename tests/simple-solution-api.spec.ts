@@ -54,8 +54,7 @@ test('login student with wrong credentials should receive code 401', async ({ re
   const response = await request.post('https://backend.tallinn-learning.ee/login/student', {
     data: requestBody,
   })
-  // Log the response status and body
+  // Log the response status
   console.log('response status:', response.status())
   expect(response.status()).toBe(StatusCodes.UNAUTHORIZED)
 })
-
