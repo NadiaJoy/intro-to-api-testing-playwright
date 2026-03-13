@@ -43,3 +43,19 @@ test('post order with correct data should receive code 201', async ({ request })
   // check that body.courierId is number type
   expect(typeof responseBody.courierId).toBe('number')
 })
+
+test('login student with wrong credentials should receive code 401', async ({ request }) => {
+  // prepare request body
+  const requestBody = {
+    username: 'testName',
+    password: 'password',
+  }
+  // Send a POST request to the server
+  const response = await request.post('https://backend.tallinn-learning.ee/login/student', {
+    data: requestBody,
+  })
+  // Log the response status and body
+  console.log('response status:', response.status())
+  expect(response.status()).toBe(StatusCodes.UNAUTHORIZED)
+})
+
