@@ -1,4 +1,4 @@
-import {expect, Locator, Page} from '@playwright/test'
+import { expect, Locator, Page } from '@playwright/test'
 
 export class TodoAppPage {
   readonly page: Page
@@ -33,10 +33,7 @@ export class TodoAppPage {
   // find element with exact text -> find its parent ->
   // and get its toggle (not the best practice, just for learning purpose)
   todoToggleByTitle(title: string) {
-    return this.page
-      .getByText(title, { exact: true })
-      .locator('..')
-      .getByTestId('todo-item-toggle')
+    return this.page.getByText(title, { exact: true }).locator('..').getByTestId('todo-item-toggle')
   }
 
   // use 'hover' to see hidden X button
@@ -44,7 +41,6 @@ export class TodoAppPage {
     const todo = this.todoItem(title)
     await todo.hover()
     await todo.locator('..').getByTestId('todo-item-button').click()
-
   }
 
   async completeTodo(title: string) {
