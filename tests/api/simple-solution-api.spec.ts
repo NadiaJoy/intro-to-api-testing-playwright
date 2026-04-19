@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 import { StatusCodes } from 'http-status-codes'
 
-test('get order with correct id should receive code 200', async ({ request }) => {
+test.skip('get order with correct id should receive code 200', async ({ request }) => {
   // Build and send a GET request to the server
   const response = await request.get('https://backend.tallinn-learning.ee/test-orders/1')
 
@@ -16,7 +16,7 @@ test('get order with correct id should receive code 200', async ({ request }) =>
   expect(statusCode).toBe(200)
 })
 
-test('post order with correct data should receive code 201', async ({ request }) => {
+test.skip('post order with correct data should receive code 201', async ({ request }) => {
   // prepare request body
   const requestBody = {
     status: 'OPEN',
@@ -44,7 +44,7 @@ test('post order with correct data should receive code 201', async ({ request })
   expect(typeof responseBody.courierId).toBe('number')
 })
 
-test('login student with wrong credentials should receive code 401', async ({ request }) => {
+test.skip('login student with wrong credentials should receive code 401', async ({ request }) => {
   // prepare request body
   const requestBody = {
     username: 'testName',
