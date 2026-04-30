@@ -10,57 +10,65 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('should create one task', async () => {
-  await todoAppPage.createTodo('my first task')
-
-  await todoAppPage.expectTodoVisible('my first task')
+  const taskName = 'my first task'
+  await todoAppPage.createTodo(taskName)
+  await todoAppPage.expectTodoVisible(taskName)
 })
 
 test('should create two todo items', async () => {
-  await todoAppPage.createTodo('task 1')
-  await todoAppPage.createTodo('task 2')
-
-  await todoAppPage.expectTodoVisible('task 1')
-  await todoAppPage.expectTodoVisible('task 2')
+  const firstTaskName = 'task 1'
+  const secondTaskName = 'task 2'
+  await todoAppPage.createTodo(firstTaskName)
+  await todoAppPage.createTodo(secondTaskName)
+  await todoAppPage.expectTodoVisible(firstTaskName)
+  await todoAppPage.expectTodoVisible(secondTaskName)
 })
 
 test('should create a task and mark it completed', async () => {
-  await todoAppPage.createTodo('completed task')
-  await todoAppPage.completeTodo('completed task')
+  const taskName = 'completed task'
+  await todoAppPage.createTodo(taskName)
+  await todoAppPage.completeTodo(taskName)
 
-  await todoAppPage.expectTodoVisible('completed task')
+  await todoAppPage.expectTodoVisible(taskName)
 })
 
 test('should filter active tasks', async () => {
-  await todoAppPage.createTodo('active task')
-  await todoAppPage.createTodo('done task')
-  await todoAppPage.completeTodo('done task')
+  const activeTaskName = 'active task'
+  const completedTaskName = 'done task'
+  await todoAppPage.createTodo(activeTaskName)
+  await todoAppPage.createTodo(completedTaskName)
+  await todoAppPage.completeTodo(completedTaskName)
 
   await todoAppPage.openActiveFilter()
 
-  await todoAppPage.expectTodoVisible('active task')
-  await todoAppPage.expectTodoHidden('done task')
+  await todoAppPage.expectTodoVisible(activeTaskName)
+  await todoAppPage.expectTodoHidden(completedTaskName)
 })
 
 test('should filter completed tasks', async () => {
-  await todoAppPage.createTodo('active task')
-  await todoAppPage.createTodo('done task')
-  await todoAppPage.completeTodo('done task')
+  const activeTaskName = 'active task'
+  const completedTaskName = 'done task'
+  await todoAppPage.createTodo(activeTaskName)
+  await todoAppPage.createTodo(completedTaskName)
+  await todoAppPage.completeTodo(completedTaskName)
 
   await todoAppPage.openCompletedFilter()
 
-  await todoAppPage.expectTodoVisible('done task')
-  await todoAppPage.expectTodoHidden('active task')
+  await todoAppPage.expectTodoVisible(completedTaskName)
+  await todoAppPage.expectTodoHidden(activeTaskName)
 })
 
 test('should clear completed tasks', async () => {
-  await todoAppPage.createTodo('active task')
-  await todoAppPage.createTodo('done task')
-  await todoAppPage.completeTodo('done task')
+  const activeTaskName = 'active task'
+  const completedTaskName = 'done task'
+  await todoAppPage.createTodo(activeTaskName)
+  await todoAppPage.createTodo(completedTaskName)
+  await todoAppPage.completeTodo(completedTaskName)
 
   await todoAppPage.clearCompleted()
 
-  await todoAppPage.expectTodoVisible('active task')
-  await todoAppPage.expectTodoHidden('done task')
+  await todoAppPage.expectTodoVisible(activeTaskName)
+  await todoAppPage.expectTodoHidden(completedTaskName)
 })
 
 test('should support long task text', async () => {
@@ -78,13 +86,14 @@ test('should rename a task', async () => {
   await todoAppPage.createTodo(initialTaskName)
   await todoAppPage.renameTodo(initialTaskName, updatedTaskName)
 
-  await expect(todoAppPage.todoItem(updatedTaskName)).toBeVisible()
-  await expect(todoAppPage.todoItem(initialTaskName)).toBeHidden()
+  await expect(todoAppPage.findTodoItemByText(updatedTaskName)).toBeVisible()
+  await expect(todoAppPage.findTodoItemByText(initialTaskName)).toBeHidden()
 })
 
 test('should delete a task', async () => {
-  await todoAppPage.createTodo('task to delete')
-  await todoAppPage.deleteTodo('task to delete')
+  const taskName = 'task to delete'
+  await todoAppPage.createTodo(taskName)
+  await todoAppPage.deleteTodo(taskName)
 
-  await todoAppPage.expectTodoHidden('task to delete')
+  await todoAppPage.expectTodoHidden(taskName)
 })

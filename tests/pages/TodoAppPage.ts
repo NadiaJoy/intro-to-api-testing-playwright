@@ -7,6 +7,8 @@ export class TodoAppPage {
   readonly activeLink: Locator
   readonly clearBtn: Locator
   readonly deleteBtn: Locator
+  readonly todoItem: Locator
+  readonly todoItemTextInput: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -15,6 +17,8 @@ export class TodoAppPage {
     this.activeLink = page.getByRole('link', { name: 'active' })
     this.clearBtn = page.getByRole('button', { name: 'clear completed' })
     this.deleteBtn = page.locator('..').getByTestId('todo-item-button')
+    this.todoItem = page.getByTestId('todo-item')
+    this.todoItemTextInput = this.todoItem.getByTestId('text-input')
   }
 
   async goto(url: string) {
@@ -26,7 +30,7 @@ export class TodoAppPage {
     await this.todoInput.press('Enter')
   }
 
-  todoItem(title: string) {
+  findTodoItemByText(title: string) {
     return this.page.getByText(title, { exact: true })
   }
 
@@ -38,7 +42,7 @@ export class TodoAppPage {
 
   // use 'hover' to see hidden X button
   async deleteTodo(title: string) {
-    const todo = this.todoItem(title)
+    const todo = this.findTodoItemByText(title)
     await todo.hover()
     await todo.locator('..').getByTestId('todo-item-button').click()
   }
@@ -60,15 +64,15 @@ export class TodoAppPage {
   }
 
   async expectTodoVisible(title: string) {
-    await expect(this.todoItem(title)).toBeVisible()
+    await expect(this.findTodoItemByText(title)).toBeVisible()
   }
 
   async expectTodoHidden(title: string) {
-    await expect(this.todoItem(title)).toBeHidden()
+    await expect(this.findTodoItemByText(title)).toBeHidden()
   }
 
   async renameTodo(oldTitle: string, newTitle: string) {
-    await this.todoItem(oldTitle).dblclick()
+    await this.findTodoItemByText(oldTitle).dblclick()
     await this.page.getByTestId('todo-item').getByTestId('text-input').fill(newTitle)
     await this.page.getByTestId('todo-item').getByTestId('text-input').press('Enter')
   }
